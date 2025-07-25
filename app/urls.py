@@ -2,8 +2,11 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    #FUNTION BASED
     path('students/',studentsView,name='studentsView'),
     path('students/<int:pk>/',studentdetailsView),
-    # path('employee/',Employees.as_view()),
-    # path('employee/<int:pk>',EmployeesDetail.as_view())
+
+    #CLASS BASED
+    path('class/students/',StudentListCreateView.as_view()),
+    path('class/student/<int:pk>',StudentDetailsView.as_view())
 ]

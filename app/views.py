@@ -8,11 +8,10 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 # It is a decorator that tells Django:
 # 👉 "This view is a REST API function, not a regular Django view"
-# from employee.models import Employee
-# from rest_framework.views import APIView
-# from django.http import Http404
-# Create your views here.
+from rest_framework.views import APIView
 
+
+#FUNCTION BASED
 @api_view(['GET','POST'])
 def studentsView(request):
     if request.method == 'GET':
@@ -50,38 +49,51 @@ def studentdetailsView(request,pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-# class Employees(APIView):
-#     def get(self, request):
-#         employees = Employee.objects.all()
-#         serializer = EmployeeSerializer(employees,many=True)
-#         return Response(serializer.data,status=status.HTTP_200_OK)
-#     def post(self,request):
-#         serializer = EmployeeSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    
-# class EmployeesDetail(APIView):
-#     def get_object(self,pk):
-#         try:
-#             return Employee.objects.get(pk=pk)
-#         except Employee.DoesNotExist:
-#             raise Http404
+
+#CLASS BASED
+class StudentListCreateView(APIView):
+    def get(self,request):
+        students = student.objects.all()
+        serializer = StudentSerializer(students,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    def post(self,request):
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class StudentDetailsView(APIView):
+    def get_object(self,pk):
+        try:
+            return student.objects.get(pk=pk)
+        except student.DoesNotExist:
+            return None
         
-#     def get(self,request,pk):
-#         employee = self.get_object(pk)
-#         serializer = EmployeeSerializer(employee)
-#         return Response(serializer.data,status=status.HTTP_200_OK)
+    def get(self,request,pk):
+        Student = self.get_object(pk)
+        if not Student:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = StudentSerializer(Student)
+        return Response(serializer.data)
+
+    def put(self,request,pk):
+        Student = self.get_object(pk)
+        if not Student:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = StudentSerializer(Student,data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-#     def put(self,request,pk):
-#         employee = self.get_object(pk)
-#         serializer = EmployeeSerializer(employee,data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,status=status.HTTP_200_OK)
-#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-#     def delete(self,request,pk):
-#         employee = self.get_object(pk)
-#         employee.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self,request,pk):
+        Student = self.get_object(pk)
+        if not Student:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        Student.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
