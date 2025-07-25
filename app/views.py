@@ -97,3 +97,20 @@ class StudentDetailsView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
+# genrics class
+from rest_framework import generics
+
+class StudentListCreateViewGenrics(generics.ListCreateAPIView):
+    ## ListCreateAPIView: handles GET (list all) and POST (create)
+    queryset = student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentDetailsViewGenrics(generics.RetrieveUpdateDestroyAPIView):
+    queryset = student.objects.all()
+    serializer_class = StudentSerializer
+
+
+
+
+
