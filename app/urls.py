@@ -21,6 +21,7 @@ urlpatterns = [
     path('class/generic/students/',StudentListCreateViewGenrics.as_view()),
     path('class/generic/student/<int:pk>',StudentDetailsViewGenrics.as_view()),
 
+    # Viewset
     path('h1/', include(router.urls)),  # ✅ include router.urls
     path('h2/', include(router1.urls)),
 ]
