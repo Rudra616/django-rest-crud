@@ -55,7 +55,7 @@ This improves performance and user experience in APIs with large datasets.
 📝 Related Blog Series on Medium
 Explore the full learning series with real-world examples, theory, and implementation:
 
-🔗 Medium Blog: rudrampanchal.medium.com
+🔗 Medium Blog: https://rudrampanchal.medium.com
 
 Topics Covered:
 
