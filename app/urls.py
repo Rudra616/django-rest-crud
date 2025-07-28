@@ -20,8 +20,11 @@ urlpatterns = [
     # Generic Class-Based Views
     path('class/generic/students/',StudentListCreateViewGenrics.as_view()),
     path('class/generic/student/<int:pk>',StudentDetailsViewGenrics.as_view()),
-
+    # check pagijnaiton http://127.0.0.1:8000/class/generic/students/?page-num=1
     # Viewset
-    path('h1/', include(router.urls)),  # ✅ include router.urls
+    path('h1/', include(router.urls)),  # <--- THIS is required
     path('h2/', include(router1.urls)),
+
+
+
 ]

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from .serilaizers import *
+
 from rest_framework.response import Response
 # send data back from your API view to the client (like frontend or Postman).
 from rest_framework import status ,generics,viewsets
@@ -10,7 +11,7 @@ from rest_framework.decorators import api_view
 # 👉 "This view is a REST API function, not a regular Django view"
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
-
+from app.paginations import CustomPagination  # 👈 Add this
 
 #FUNCTION BASED
 @api_view(['GET','POST'])
@@ -102,18 +103,21 @@ class StudentListCreateViewGenrics(generics.ListCreateAPIView):
     ## ListCreateAPIView: handles GET (list all) and POST (create)
     queryset = student.objects.all()
     serializer_class = StudentSerializer
+ 
 
 class StudentDetailsViewGenrics(generics.RetrieveUpdateDestroyAPIView):
     queryset = student.objects.all()
     serializer_class = StudentSerializer
 
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # viewsets
 class StudentAll(viewsets.ModelViewSet):
-    queryset = student.objects.all()
+    queryset = student.objects.all().order_by('id')  # ✅ RIGHT HERE
     serializer_class = StudentSerializer
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['branch', 'student_id'] 
 
 class StudentViewSet(viewsets.ViewSet):
 # viewsets
